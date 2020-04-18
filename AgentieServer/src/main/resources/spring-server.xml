@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+
+
+    <util:properties id="jdbcProperties">
+        <prop key="agentie.jdbc.url">jdbc:sqlite:C:/Users/raluc/IdeaProjects/databases/AgentieTurism</prop>
+        <prop key="agentie.jdbc.pass">null</prop>
+        <prop key="agentie.jdbc.user">null</prop>
+    </util:properties>
+
+    <bean id="agentiRepo" class="repository.AgentiJdbcRepository">
+        <constructor-arg ref="jdbcProperties"/>
+    </bean>
+
+    <bean id="clientRepo" class="repository.ClientJdbcRepository">
+        <constructor-arg ref="jdbcProperties"/>
+    </bean>
+
+    <bean id="excursieRepo" class="repository.ExcursieJdbcRepository">
+        <constructor-arg ref="jdbcProperties"/>
+    </bean>
+
+    <bean id="rezervareRepo" class="repository.RezervareJdbcRepository">
+        <constructor-arg ref="jdbcProperties"/>
+    </bean>
+
+    <bean id="clientValidator" class="validator.ClientValidator"/>
+    <bean id="rezervareValidator" class="validator.RezervareValidator"/>
+
+    <bean id="agentieService" class="server.ServiceImplementation">
+        <constructor-arg ref="clientRepo"/>
+        <constructor-arg ref="rezervareRepo"/>
+        <constructor-arg ref="excursieRepo"/>
+        <constructor-arg ref="agentiRepo"/>
+        <constructor-arg ref="clientValidator"/>
+        <constructor-arg ref="rezervareValidator"/>
+    </bean>
+
+    <bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+
+        <property name="serviceName" value="Agentie"/>
+        <property name="service" ref="agentieService"/>
+        <property name="serviceInterface" value="services.IService"/>
+        <property name="servicePort" value="1099"/>
+    </bean>
+
+</beans>

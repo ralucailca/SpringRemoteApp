@@ -1,0 +1,9 @@
+rootProject.name = 'AgentieSpringRemoting'
+include 'AgentieClient'
+include 'AgentieModel'
+include 'AgentieModel'
+include 'AgentieModel'
+include 'AgentiePersistence'
+include 'AgentieServices'
+include 'AgentieServer'
+
